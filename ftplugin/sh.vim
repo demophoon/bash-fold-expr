@@ -1,41 +1,39 @@
-setlocal foldmethod=expr
-setlocal foldexpr=GetBashFold(v:lnum)
-
-function! GetBashFold(lnum)
+function! GetBashFold()
+  let line = getline(v:lnum)
 
   " End of if statement
-  if getline(a:lnum) =~? '\v^\s*fi\s*$'
+  if line =~? '\v^\s*fi\s*$'
     return 's1'
   endif
   " Start of if statement
-  if getline(a:lnum) =~? '\v^\s*if.*(;\s*then)?$'
+  if line =~? '\v^\s*if.*(;\s*then)?$'
     return 'a1'
   endif
 
   " End of while/for statement
-  if getline(a:lnum) =~? '\v^\s*done\s*$'
+  if line =~? '\v^\s*done\s*$'
     return 's1'
   endif
   " Start of while/for statement
-  if getline(a:lnum) =~? '\v^\s*(while|for).*(;\s*do)?$'
+  if line =~? '\v^\s*(while|for).*(;\s*do)?$'
     return 'a1'
   endif
 
   " End of case statement
-  if getline(a:lnum) =~? '\v^\s*esac\s*$'
+  if line =~? '\v^\s*esac\s*$'
     return 's1'
   endif
   " Start of case statement
-  if getline(a:lnum) =~? '\v^\s*case.*(\s*in)$'
+  if line =~? '\v^\s*case.*(\s*in)$'
     return 'a1'
   endif
 
   " End of function statement
-  if getline(a:lnum) =~? '\v^\s*\}$'
+  if line =~? '\v^\s*\}$'
     return 's1'
   endif
   " Start of function statement
-  if getline(a:lnum) =~? '\v^\s*\S+\(\) \{'
+  if line =~? '\v^\s*(function\s+)?\S+\(\) \{'
     return 'a1'
   endif
 
@@ -43,3 +41,6 @@ function! GetBashFold(lnum)
   return '='
 
 endfunction
+
+setlocal foldmethod=expr
+setlocal foldexpr=GetBashFold()
