@@ -42,5 +42,7 @@ function! GetBashFold()
 
 endfunction
 
-setlocal foldmethod=expr
-setlocal foldexpr=GetBashFold()
+augroup sh
+    au BufReadPre *.sh setlocal foldmethod=expr
+    au BufWinEnter *.sh if &fdm == 'expr' | setlocal foldexpr=GetBashFold() | endif
+augroup END
